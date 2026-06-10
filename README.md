@@ -10,7 +10,6 @@ personal libreboot patches for thinkpad t480, based on libreboot 26.01.
 - `f1_to_f12_as_primary` default → 0 — hotkeys primary on boot (fnlock off); cmos doesn't persist this on t480 with libreboot
 - `payload_grubsea` — grub primary, seabios accessible from grub menu
 - `set timeout=0` — no grub delay
-- `device ref smbus on end` on the sklkbl_thinkpad mainboard — exposes pci 00:1f.4 so linux can switch the synaptics trackpad onto rmi4-over-smbus (intertouch, ~125-250hz instead of 80hz ps/2)
 
 ## apply
 
