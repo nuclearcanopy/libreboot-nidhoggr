@@ -16,13 +16,18 @@ Summary of changes:
   the thinkpad plugin with natacpi to enforce battery charge thresholds
 - Default f1_to_f12_as_primary to 0 (hotkeys primary, FnLock OFF on boot)
   via config/coreboot/default/patches/0052-ec-h8-default-f1_to_f12_as_primary-to-0-hotkeys-primary.patch
+- Enable the SMBus PCI device (00:1f.4) on the sklkbl_thinkpad mainboard
+  so Linux's psmouse driver can switch the Synaptics touchpad from PS/2
+  (~80Hz) onto RMI4-over-SMBus (Intertouch, ~125-250Hz). The skylake SoC
+  defaults this device to off; the mainboard devicetree.cb must turn it on.
 
 ---
  config/coreboot/t480_vfsp_16mb/config/libgfxinit_corebootfb | 2 +-
  config/coreboot/t480_vfsp_16mb/config/libgfxinit_txtmode     | 2 +-
  config/coreboot/t480_vfsp_16mb/target.cfg                    | 2 +-
  config/grub/xhci_nvme/config/payload                         | 6 +-----
- 4 files changed, 7 insertions(+), 9 deletions(-)
+ src/coreboot/default/src/mainboard/lenovo/sklkbl_thinkpad/devicetree.cb | 1 +
+ 5 files changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/config/coreboot/t480_vfsp_16mb/config/libgfxinit_corebootfb b/config/coreboot/t480_vfsp_16mb/config/libgfxinit_corebootfb
 index 9e54ced6..7a1a7045 100644
@@ -113,5 +118,16 @@ index 9db22fe2..f6158379 100644
  set grub_scan_disk="nvme ahci ata"
  if [ -f (cbfsdisk)/scan.cfg ]; then
  	source (cbfsdisk)/scan.cfg
+diff --git a/src/coreboot/default/src/mainboard/lenovo/sklkbl_thinkpad/devicetree.cb b/src/coreboot/default/src/mainboard/lenovo/sklkbl_thinkpad/devicetree.cb
+--- a/src/coreboot/default/src/mainboard/lenovo/sklkbl_thinkpad/devicetree.cb
++++ b/src/coreboot/default/src/mainboard/lenovo/sklkbl_thinkpad/devicetree.cb
+@@ -75,6 +75,7 @@ chip soc/intel/skylake
+ 				device pnp 0c31.0 on end
+ 			end
+ 		end
++		device ref smbus on end
+ 		device ref hda on end
+ 	end
+ end
 --
 2.49.0
